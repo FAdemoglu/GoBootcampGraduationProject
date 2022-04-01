@@ -13,10 +13,10 @@ import (
 
 type AuthController struct {
 	appConfig *config.Configuration
-	r         users.UserRepository
+	r         users.UserService
 }
 
-func NewAuthController(appConfig *config.Configuration, r users.UserRepository) *AuthController {
+func NewAuthController(appConfig *config.Configuration, r users.UserService) *AuthController {
 	return &AuthController{
 		appConfig: appConfig,
 		r:         r,
@@ -44,7 +44,7 @@ func (c *AuthController) Login(g *gin.Context) {
 		})
 		return
 	}
-	user := c.r.GetByUsernameAndPassword(req.Username, req.Password)
+	user := c.r.GetByUserNameAndPassword(req.Username, req.Password)
 
 	if user.Username == "" {
 		g.JSON(http.StatusNotFound, gin.H{

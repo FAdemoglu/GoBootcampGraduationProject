@@ -38,3 +38,7 @@ func (c *CategoryController) GetAllCategories(g *gin.Context) {
 
 	g.JSON(http.StatusCreated, paginatedResult)
 }
+
+func (c *CategoryController) UploadCSVDatas(g *gin.Context) {
+
+}

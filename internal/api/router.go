@@ -28,10 +28,10 @@ func RegisterHandlers(r *gin.Engine) {
 	userRepository.Migration()
 	userRepository.InsertSampleData()
 	categoryRepository.InsertSampleData()
-	//userService := users.NewUserService(*userRepository)
+	userService := users.NewUserService(*userRepository)
 	categoryService := category.NewCategoryService(*categoryRepository)
 	categoryController := categoryController.NewCategoryController(categoryService)
-	authController := auth.NewAuthController(AppConfig, *userRepository)
+	authController := auth.NewAuthController(AppConfig, *userService)
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
