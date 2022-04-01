@@ -16,8 +16,13 @@ func (r *UserRepository) Migration() error {
 	return r.db.AutoMigrate(&User{})
 }
 
-func (r *UserRepository) CreateUser(u *User) error {
-	result := r.db.Create(u)
+func (r *UserRepository) CreateUser(username, password string) error {
+	req := User{
+		Username: username,
+		Password: password,
+		Roles:    "customer",
+	}
+	result := r.db.Where(User{Username: req.Username}).Attrs(User{Username: req.Username, Password: req.Password, Roles: req.Roles}).FirstOrCreate(&req)
 
 	if result.Error != nil {
 		return result.Error
@@ -25,9 +30,9 @@ func (r *UserRepository) CreateUser(u *User) error {
 	return nil
 }
 
-func (r *UserRepository) GetByUsername(username string) []User {
-	var users []User
-	r.db.Where("Name LIKE ?", "%"+username+"%").Find(&users)
+func (r *UserRepository) GetByUsername(username string) *User {
+	var users *User
+	r.db.Where("username = ?", username).Find(&users)
 	return users
 }
 

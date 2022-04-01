@@ -40,6 +40,7 @@ func RegisterHandlers(r *gin.Engine) {
 
 	authGroup := r.Group("/user")
 	authGroup.POST("/login", authController.Login)
+	authGroup.POST("/register", authController.Register)
 	authGroup.GET("/decode", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), authController.VerifyToken)
 
 	//Categories Group
