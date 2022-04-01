@@ -9,3 +9,8 @@ func NewCategoryService(c CategoryRepository) *CategoryService {
 		r: c,
 	}
 }
+
+func (c *CategoryService) GetAllCategories(pageIndex, pageSize int) ([]Category, int) {
+	categories, count := c.r.GetAllCategories(pageIndex, pageSize)
+	return categories, count
+}

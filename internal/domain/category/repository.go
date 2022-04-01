@@ -16,6 +16,14 @@ func (c *CategoryRepository) Migration() error {
 	return c.db.AutoMigrate(&Category{})
 }
 
+func (r *CategoryRepository) GetAllCategories(pageIndex, pageSize int) ([]Category, int) {
+	var categories []Category
+	var count int64
+
+	r.db.Offset((pageIndex - 1) * pageSize).Limit(pageSize).Find(&categories).Count(&count)
+	return categories, int(count)
+}
+
 func (c *CategoryRepository) InsertSampleData() {
 	categories := []*Category{
 		{

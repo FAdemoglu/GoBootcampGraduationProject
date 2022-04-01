@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/FAdemoglu/graduationproject/internal/api/auth"
+	categoryController "github.com/FAdemoglu/graduationproject/internal/api/category"
 	"github.com/FAdemoglu/graduationproject/internal/config"
 	"github.com/FAdemoglu/graduationproject/internal/domain/category"
 	"github.com/FAdemoglu/graduationproject/internal/domain/users"
@@ -28,6 +29,8 @@ func RegisterHandlers(r *gin.Engine) {
 	userRepository.InsertSampleData()
 	categoryRepository.InsertSampleData()
 	//userService := users.NewUserService(*userRepository)
+	categoryService := category.NewCategoryService(*categoryRepository)
+	categoryController := categoryController.NewCategoryController(categoryService)
 	authController := auth.NewAuthController(AppConfig, *userRepository)
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -38,4 +41,9 @@ func RegisterHandlers(r *gin.Engine) {
 	authGroup := r.Group("/user")
 	authGroup.POST("/login", authController.Login)
 	authGroup.GET("/decode", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), authController.VerifyToken)
+
+	//Categories Group
+	categoryGroup := r.Group("/category")
+	categoryGroup.GET("/list", categoryController.GetAllCategories)
+
 }
