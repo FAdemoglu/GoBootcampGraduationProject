@@ -1,7 +1,7 @@
 package users
 
 type User struct {
-	Id       int `gorm:"column:UserId"`
+	Id       int `gorm:"column:UserId,primary_key;auto_increment;not_null"`
 	Username string
 	Password string
 	Roles    string
