@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/FAdemoglu/graduationproject/internal/api/auth"
 	"github.com/FAdemoglu/graduationproject/internal/config"
+	"github.com/FAdemoglu/graduationproject/internal/domain/category"
 	"github.com/FAdemoglu/graduationproject/internal/domain/users"
 	"github.com/FAdemoglu/graduationproject/pkg/database_handler"
 	"github.com/FAdemoglu/graduationproject/pkg/middleware"
@@ -21,8 +22,11 @@ func RegisterHandlers(r *gin.Engine) {
 
 	db := database_handler.NewMySQLDB(AppConfig.DatabaseSettings.DatabaseURI)
 	userRepository := users.NewUserRepository(db)
+	categoryRepository := category.NewCategoryRepository(db)
+	categoryRepository.Migration()
 	userRepository.Migration()
 	userRepository.InsertSampleData()
+	categoryRepository.InsertSampleData()
 	//userService := users.NewUserService(*userRepository)
 	authController := auth.NewAuthController(AppConfig, *userRepository)
 	r.GET("/ping", func(c *gin.Context) {

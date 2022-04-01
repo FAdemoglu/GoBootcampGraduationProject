@@ -53,6 +53,6 @@ func (r *UserRepository) InsertSampleData() {
 		},
 	}
 	for _, u := range users {
-		r.db.Create(&u)
+		r.db.Where(User{Username: u.Username}).Attrs(User{Username: u.Username, Id: u.Id, Password: u.Password, Roles: u.Roles}).FirstOrCreate(&u)
 	}
 }
