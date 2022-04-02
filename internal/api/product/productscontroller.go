@@ -67,3 +67,45 @@ func (c *ProductController) CreateProduct(g *gin.Context) {
 		"message": "Ürün başarılı bir şekilde eklendi",
 	})
 }
+
+func (c *ProductController) UpdateProduct(g *gin.Context) {
+	var req ProductRequest
+
+	if err := g.ShouldBind(&req); err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "Check your request body.",
+		})
+		return
+	}
+	IdForm := g.Query("Id")
+	if IdForm == "" {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "Check your request body.",
+		})
+		return
+	}
+	Id, _ := strconv.Atoi(IdForm)
+	product := products.Product{
+		ProductName:       req.ProductName,
+		ProductPrice:      req.ProductPrice,
+		ProductStockCount: req.ProductStockCount,
+		CategoryId:        req.CategoryId,
+	}
+	err := c.productService.UpdateProduct(Id, product)
+	if err == products.ErrCouldNotFindProductById {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "Bu Id ile bir ürün bulunamadı",
+		})
+		return
+	}
+	if err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "Check your request body.",
+		})
+		return
+	}
+
+	g.JSON(http.StatusOK, gin.H{
+		"message": "Ürün başarılı bir şekilde güncellendi",
+	})
+}

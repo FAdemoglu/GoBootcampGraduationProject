@@ -24,3 +24,8 @@ func (r *ProductService) CreateProduct(p Product) error {
 	err := r.r.CreateProduct(p)
 	return err
 }
+
+func (r *ProductService) UpdateProduct(Id int, p Product) error {
+	err := r.r.UpdateProduct(Id, p)
+	return err
+}

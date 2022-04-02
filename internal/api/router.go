@@ -67,5 +67,6 @@ func RegisterHandlers(r *gin.Engine) {
 	productGroup.GET("/list", productController.GetAllProducts)
 	productGroup.DELETE("/remove", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.DeleteProductById)
 	productGroup.POST("/create", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.CreateProduct)
+	productGroup.POST("/update", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.UpdateProduct)
 
 }

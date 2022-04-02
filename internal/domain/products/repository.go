@@ -1,6 +1,7 @@
 package products
 
 import (
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -44,6 +45,29 @@ func (r *ProductRepository) CreateProduct(p Product) error {
 	result := r.db.Create(&p)
 	if result.Error != nil {
 		return result.Error
+	}
+	return nil
+}
+
+func (r *ProductRepository) UpdateProduct(Id int, p Product) error {
+	var product Product
+	result := r.db.First(&product, Id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return ErrCouldNotFindProductById
+	}
+	if result.Error != nil {
+		return result.Error
+	}
+	if p.ProductStockCount < 0 || p.CategoryId < 0 {
+		return ErrLessThanZero
+	}
+	product.ProductStockCount = p.ProductStockCount
+	product.ProductPrice = p.ProductPrice
+	product.CategoryId = p.CategoryId
+	p.ProductName = p.ProductName
+	resultSave := r.db.Save(product)
+	if resultSave.Error != nil {
+		return resultSave.Error
 	}
 	return nil
 }
