@@ -1,7 +1,7 @@
 package category
 
 type Category struct {
-	Id           int `gorm:"column:CategoryId;autoIncrement;PRIMARY_KEY;not null"`
+	Id           int `gorm:"column:CategoryId;autoIncrement;primaryKey;not null"`
 	CategoryName string
 }
 
