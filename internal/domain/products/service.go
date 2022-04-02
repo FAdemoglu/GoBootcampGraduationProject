@@ -14,3 +14,8 @@ func (r *ProductService) GetAllProducts(pageIndex, pageSize int) ([]Product, int
 	products, count := r.r.GetAllProducts(pageIndex, pageSize)
 	return products, count
 }
+
+func (r *ProductService) DeleteProductById(Id int) error {
+	err := r.r.DeleteProductById(Id)
+	return err
+}

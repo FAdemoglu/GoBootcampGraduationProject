@@ -63,5 +63,6 @@ func RegisterHandlers(r *gin.Engine) {
 
 	productGroup := r.Group("/product")
 	productGroup.GET("/list", productController.GetAllProducts)
+	productGroup.DELETE("/remove", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.DeleteProductById)
 
 }

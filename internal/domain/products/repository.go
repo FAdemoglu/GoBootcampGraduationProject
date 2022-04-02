@@ -1,6 +1,8 @@
 package products
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type ProductRepository struct {
 	db *gorm.DB
@@ -21,6 +23,21 @@ func (r *ProductRepository) GetAllProducts(pageIndex, pageSize int) ([]Product, 
 	var count int64
 	r.db.Offset((pageIndex - 1) * pageSize).Limit(pageSize).Find(&products).Count(&count)
 	return products, int(count)
+}
+
+func (r *ProductRepository) DeleteProductById(id int) error {
+	var exists bool
+	result := r.db.Delete(&Product{}, id)
+
+	if err := result.Scan(&exists); err != nil {
+		return result.Error
+	} else if !exists {
+		return ErrCouldNotFindProductById
+	}
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 
 func (r *ProductRepository) InserSampleData() {
