@@ -19,3 +19,8 @@ func (r *ProductService) DeleteProductById(Id int) error {
 	err := r.r.DeleteProductById(Id)
 	return err
 }
+
+func (r *ProductService) CreateProduct(p Product) error {
+	err := r.r.CreateProduct(p)
+	return err
+}

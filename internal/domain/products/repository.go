@@ -40,6 +40,14 @@ func (r *ProductRepository) DeleteProductById(id int) error {
 	return nil
 }
 
+func (r *ProductRepository) CreateProduct(p Product) error {
+	result := r.db.Create(&p)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (r *ProductRepository) InserSampleData() {
 	products := Product{
 		Id:                1,

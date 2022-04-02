@@ -51,6 +51,7 @@ func RegisterHandlers(r *gin.Engine) {
 		})
 	})
 
+	//User Group
 	authGroup := r.Group("/user")
 	authGroup.POST("/login", authController.Login)
 	authGroup.POST("/register", authController.Register)
@@ -61,8 +62,10 @@ func RegisterHandlers(r *gin.Engine) {
 	categoryGroup.GET("/list", categoryController.GetAllCategories)
 	categoryGroup.POST("/uploadcsv", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), categoryController.UploadCSVDatas)
 
+	//Product Group
 	productGroup := r.Group("/product")
 	productGroup.GET("/list", productController.GetAllProducts)
 	productGroup.DELETE("/remove", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.DeleteProductById)
+	productGroup.POST("/create", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), productController.CreateProduct)
 
 }
