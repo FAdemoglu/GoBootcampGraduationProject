@@ -4,6 +4,7 @@ import (
 	"github.com/FAdemoglu/graduationproject/internal/config"
 	"github.com/FAdemoglu/graduationproject/internal/domain/users"
 	jwtHelper "github.com/FAdemoglu/graduationproject/pkg/jwt"
+	"github.com/FAdemoglu/graduationproject/shared"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -61,7 +62,8 @@ func (c *AuthController) Login(g *gin.Context) {
 		"roles":    user.Roles,
 	})
 	token := jwtHelper.GenerateToken(jwtClaims, c.appConfig.JwtSettings.SecretKey)
-	g.JSON(http.StatusOK, token)
+	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı", Data: token}
+	g.JSON(http.StatusOK, data)
 }
 
 // Register godoc
@@ -110,7 +112,8 @@ func (c *AuthController) Register(g *gin.Context) {
 		"roles":    user.Roles,
 	})
 	token := jwtHelper.GenerateToken(jwtClaims, c.appConfig.JwtSettings.SecretKey)
-	g.JSON(http.StatusOK, token)
+	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı", Data: token}
+	g.JSON(http.StatusOK, data)
 
 }
 
