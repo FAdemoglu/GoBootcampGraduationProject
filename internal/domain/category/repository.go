@@ -16,6 +16,12 @@ func (c *CategoryRepository) Migration() error {
 	return c.db.AutoMigrate(&Category{})
 }
 
+func (c *CategoryRepository) CreateCategoriesFromCsv(categories []Category) {
+	for _, category := range categories {
+		c.db.Where(Category{CategoryName: category.CategoryName}).Attrs(Category{Id: category.Id, CategoryName: category.CategoryName}).FirstOrCreate(&category)
+	}
+}
+
 func (r *CategoryRepository) GetAllCategories(pageIndex, pageSize int) ([]Category, int) {
 	var categories []Category
 	var count int64

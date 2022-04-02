@@ -14,3 +14,7 @@ func (c *CategoryService) GetAllCategories(pageIndex, pageSize int) ([]Category,
 	categories, count := c.r.GetAllCategories(pageIndex, pageSize)
 	return categories, count
 }
+
+func (c *CategoryService) SaveCsvCategories(category []Category) {
+	c.r.CreateCategoriesFromCsv(category)
+}

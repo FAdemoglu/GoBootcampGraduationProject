@@ -46,5 +46,6 @@ func RegisterHandlers(r *gin.Engine) {
 	//Categories Group
 	categoryGroup := r.Group("/category")
 	categoryGroup.GET("/list", categoryController.GetAllCategories)
+	categoryGroup.POST("/uploadcsv", middleware.AuthMiddleware(AppConfig.JwtSettings.SecretKey), categoryController.UploadCSVDatas)
 
 }
