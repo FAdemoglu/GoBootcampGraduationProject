@@ -33,6 +33,20 @@ func (r *CartRepository) AddToCart(c Cart) error {
 	return nil
 }
 
+func (r *CartRepository) DeleteById(username string, id int) error {
+	var exists bool
+	result := r.db.Where("CustomerUsername = ?", username).Delete(&Cart{}, id)
+	if err := result.Scan(&exists); err != nil {
+		return result.Error
+	} else if !exists {
+		return ErrCouldNotFindCartById
+	}
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (r *CartRepository) InsertSampleData() {
 	cart := Cart{
 		CustomerUsername: "Furkan Ademoglu",

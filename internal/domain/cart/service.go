@@ -18,3 +18,11 @@ func (r *CartService) GetAllCartProduct(pageIndex, pageSize int, customerUsernam
 func (r *CartService) Create(c Cart) {
 	r.r.AddToCart(c)
 }
+
+func (r *CartService) DeleteById(username string, id int) error {
+	err := r.r.DeleteById(username, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -51,7 +51,7 @@ func RegisterHandlers(r *gin.Engine) {
 	categoryController := categoryController.NewCategoryController(categoryService)
 	authController := auth.NewAuthController(AppConfig, *userService)
 	productController := product.NewProductControler(productService)
-	cartController := cart2.NewCartController(AppConfig, cartService)
+	cartController := cart2.NewCartController(AppConfig, cartService, productService)
 
 	//User Group
 	authGroup := r.Group("/user")
@@ -76,5 +76,5 @@ func RegisterHandlers(r *gin.Engine) {
 	cartGroup := r.Group("/cart")
 	cartGroup.GET("/list", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.GetAllProducts)
 	cartGroup.POST("/add", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.AddToCart)
-
+	cartGroup.POST("/remove", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.DeleteById)
 }
