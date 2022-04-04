@@ -109,3 +109,12 @@ func (c *ProductController) UpdateProduct(g *gin.Context) {
 		"message": "Ürün başarılı bir şekilde güncellendi",
 	})
 }
+
+func (c *ProductController) SearchProduct(g *gin.Context) {
+	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
+	searched := g.Query("searched")
+	items, count := c.productService.SearchProduct(pageIndex, pageSize, searched)
+	paginatedResult := pagination.NewFromGinRequest(g, count)
+	paginatedResult.Items = items
+	g.JSON(http.StatusOK, paginatedResult)
+}

@@ -72,6 +72,13 @@ func (r *ProductRepository) UpdateProduct(Id int, p Product) error {
 	return nil
 }
 
+func (r *ProductRepository) SearchProduct(pageIndex, pageSize int, searched string) ([]Product, int) {
+	var products []Product
+	var count int64
+	r.db.Preload("Category").Joins("JOIN category on category.CategoryId=products.CategoryId").Where("ProductName LIKE ?", "%"+searched+"%").Or("category.CategoryName LIKE ?", "%"+searched+"%").Offset((pageIndex - 1) * pageSize).Limit(pageSize).Find(&products).Count(&count)
+	return products, int(count)
+}
+
 func (r *ProductRepository) InserSampleData() {
 	products := Product{
 		Id:                1,

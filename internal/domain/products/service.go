@@ -29,3 +29,8 @@ func (r *ProductService) UpdateProduct(Id int, p Product) error {
 	err := r.r.UpdateProduct(Id, p)
 	return err
 }
+
+func (r *ProductService) SearchProduct(pageIndex, pageSize int, searched string) ([]Product, int) {
+	products, count := r.r.SearchProduct(pageIndex, pageSize, searched)
+	return products, count
+}
