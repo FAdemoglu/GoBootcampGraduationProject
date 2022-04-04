@@ -18,6 +18,7 @@ func NewProductControler(service *products.ProductService) *ProductController {
 	}
 }
 
+//Get all product list with pagination
 func (c *ProductController) GetAllProducts(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	items, count := c.productService.GetAllProducts(pageIndex, pageSize)
