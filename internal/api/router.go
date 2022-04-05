@@ -77,4 +77,5 @@ func RegisterHandlers(r *gin.Engine) {
 	cartGroup.GET("/list", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.GetAllProducts)
 	cartGroup.POST("/add", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.AddToCart)
 	cartGroup.POST("/remove", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.DeleteById)
+	cartGroup.PUT("/update", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.UpdateCart)
 }

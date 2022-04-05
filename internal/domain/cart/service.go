@@ -26,3 +26,11 @@ func (r *CartService) DeleteById(username string, id int) error {
 	}
 	return nil
 }
+
+func (r *CartService) UpdateTheCart(username string, id, itemId, count int) error {
+	err := r.r.UpdateTheCart(username, id, itemId, count)
+	if err != nil {
+		return err
+	}
+	return nil
+}

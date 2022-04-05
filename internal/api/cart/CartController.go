@@ -52,6 +52,7 @@ func (c *CartController) AddToCart(g *gin.Context) {
 				ProductName: req.ProductName,
 				UnitPrice:   req.UnitPrice,
 				Quantity:    req.Quantity,
+				ProductId:   req.ProductId,
 			},
 		},
 	}
@@ -66,16 +67,35 @@ func (c *CartController) DeleteById(g *gin.Context) {
 	decodedClaims := jwtHelper.VerifyToken(g.GetHeader("Authorization"), c.appConfig.SecretKey, "qa")
 	err := c.cartService.DeleteById(decodedClaims.Username, Id)
 
-	if err != cart.ErrCouldNotFindCartById {
+	if err == cart.ErrCouldNotFindCartById {
 		g.JSON(http.StatusBadRequest, gin.H{
 			"error_message": "Bu id ile bir ürün yoktur.",
 		})
 		return
 	}
-	if err != nil {
+
+	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı"}
+	g.JSON(http.StatusOK, data)
+}
+
+func (c *CartController) UpdateCart(g *gin.Context) {
+	IdForm := g.Query("Id")
+	ItemIdForm := g.Query("ItemId")
+	CountForm := g.Query("Count")
+	Id, _ := strconv.Atoi(IdForm)
+	ItemId, _ := strconv.Atoi(ItemIdForm)
+	Count, _ := strconv.Atoi(CountForm)
+	decodedClaims := jwtHelper.VerifyToken(g.GetHeader("Authorization"), c.appConfig.SecretKey, "qa")
+
+	err := c.cartService.UpdateTheCart(decodedClaims.Username, Id, ItemId, Count)
+	if err == cart.ErrCouldNotFindCartById {
 		g.JSON(http.StatusBadRequest, gin.H{
-			"error_message": "Check your request body.",
+			"error_message": "Bu id ile bir ürün yoktur.",
 		})
 		return
 	}
+
+	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı"}
+	g.JSON(http.StatusOK, data)
+
 }

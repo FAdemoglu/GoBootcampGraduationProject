@@ -1,6 +1,7 @@
 package cart
 
 import (
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -33,6 +34,27 @@ func (r *CartRepository) AddToCart(c Cart) error {
 	return nil
 }
 
+func (r *CartRepository) UpdateTheCart(username string, id, itemId, count int) error {
+	var cart Cart
+	result := r.db.Preload("Items").Joins("JOIN item on item.CartId=cart.CartId").Where("CustomerUsername = ?", username).First(&cart, id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return ErrCouldNotFindCartById
+	}
+	if result.Error != nil {
+		return result.Error
+	}
+	for i := range cart.Items {
+		if cart.Items[i] == cart.Items[itemId-1] {
+			cart.Items[i].Quantity += count
+		}
+	}
+	resultSave := r.db.Save(&cart)
+	if resultSave.Error != nil {
+		return resultSave.Error
+	}
+	return nil
+}
+
 func (r *CartRepository) DeleteById(username string, id int) error {
 	var exists bool
 	result := r.db.Where("CustomerUsername = ?", username).Delete(&Cart{}, id)
@@ -55,6 +77,7 @@ func (r *CartRepository) InsertSampleData() {
 				ProductName: "Lenovo IDEA PAD",
 				UnitPrice:   300,
 				Quantity:    1,
+				ProductId:   5,
 			},
 		},
 	}
