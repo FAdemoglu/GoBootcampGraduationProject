@@ -4,10 +4,12 @@ import (
 	"github.com/FAdemoglu/graduationproject/internal/api/auth"
 	cart2 "github.com/FAdemoglu/graduationproject/internal/api/cart"
 	categoryController "github.com/FAdemoglu/graduationproject/internal/api/category"
+	order2 "github.com/FAdemoglu/graduationproject/internal/api/order"
 	"github.com/FAdemoglu/graduationproject/internal/api/product"
 	"github.com/FAdemoglu/graduationproject/internal/config"
 	"github.com/FAdemoglu/graduationproject/internal/domain/cart"
 	"github.com/FAdemoglu/graduationproject/internal/domain/category"
+	"github.com/FAdemoglu/graduationproject/internal/domain/order"
 	"github.com/FAdemoglu/graduationproject/internal/domain/products"
 	"github.com/FAdemoglu/graduationproject/internal/domain/users"
 	"github.com/FAdemoglu/graduationproject/pkg/database_handler"
@@ -32,26 +34,32 @@ func RegisterHandlers(r *gin.Engine) {
 	categoryRepository := category.NewCategoryRepository(db)
 	productRepository := products.NewProductRepository(db)
 	cartRepository := cart.NewCartRepository(db)
+	orderRepository := order.NewOrderRepository(db)
 
 	//Migration is done
 	categoryRepository.Migration()
 	userRepository.Migration()
 	productRepository.Migration()
 	cartRepository.Migration()
+	orderRepository.Migration()
 
 	//Inserted sample datas to database
 	userRepository.InsertSampleData()
 	categoryRepository.InsertSampleData()
 	productRepository.InserSampleData()
 	//cartRepository.InsertSampleData()
+	//orderRepository.InsertSampleData()
 	userService := users.NewUserService(*userRepository)
 	categoryService := category.NewCategoryService(*categoryRepository)
 	productService := products.NewProductService(*productRepository)
 	cartService := cart.NewCartService(*cartRepository)
+	orderService := order.NewOrderService(*orderRepository)
+
 	categoryController := categoryController.NewCategoryController(categoryService)
 	authController := auth.NewAuthController(AppConfig, *userService)
 	productController := product.NewProductControler(productService)
 	cartController := cart2.NewCartController(AppConfig, cartService, productService)
+	orderController := order2.NewOrderController(AppConfig, orderService, productService)
 
 	//User Group
 	authGroup := r.Group("/user")
@@ -78,4 +86,9 @@ func RegisterHandlers(r *gin.Engine) {
 	cartGroup.POST("/add", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.AddToCart)
 	cartGroup.POST("/remove", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.DeleteById)
 	cartGroup.PUT("/update", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), cartController.UpdateCart)
+
+	//Order Group
+	orderGroup := r.Group("/order")
+	orderGroup.GET("/list", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.GetAllProducts)
+
 }
