@@ -14,3 +14,8 @@ func (r *OrderService) GetAllOrderedProduct(pageIndex, pageSize int, customerUse
 	orderItems, count := r.r.GetAllOrderedProducts(pageIndex, pageSize, customerUsername)
 	return orderItems, count
 }
+
+func (r *OrderService) CancelOrder(orderId int, customerUsername string) error {
+	error := r.r.CancelOrder(orderId, customerUsername)
+	return error
+}

@@ -22,6 +22,26 @@ func (r *OrderRepository) GetAllOrderedProducts(pageIndex, pageSize int, custome
 	return cart, int(count)
 }
 
+func (r *OrderRepository) CancelOrder(orderId int, customerUsername string) error {
+	var order Order
+	r.db.Where("OrderId = ? AND CustomerUsername=? AND IsCancelled=?", orderId, customerUsername, false).Find(&order)
+	currentTime := time.Now()
+	time := order.CreatedAt.AddDate(0, 0, 14)
+	if order.CustomerUsername == "" {
+		return ErrCouldNotFindOrderById
+	}
+	if currentTime.Before(time) {
+		order.IsCancelled = true
+		resultSave := r.db.Save(order)
+		if resultSave.Error != nil {
+			return resultSave.Error
+		}
+	} else {
+		return ErrCanNotCancelOrder
+	}
+	return nil
+}
+
 func (r *OrderRepository) Migration() error {
 	return r.db.AutoMigrate(&Order{}, &OrderItem{})
 }
@@ -31,6 +51,7 @@ func (r *OrderRepository) InsertSampleData() {
 		CustomerUsername: "Furkan Ademoglu",
 		OrderId:          1,
 		CreatedAt:        time.Now(),
+		IsCancelled:      false,
 		OrderItems: []OrderItem{
 			{
 				ProductName: "Lenovo IDEA PAD",

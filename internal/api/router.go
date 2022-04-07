@@ -48,7 +48,7 @@ func RegisterHandlers(r *gin.Engine) {
 	categoryRepository.InsertSampleData()
 	productRepository.InserSampleData()
 	//cartRepository.InsertSampleData()
-	//orderRepository.InsertSampleData()
+	orderRepository.InsertSampleData()
 	userService := users.NewUserService(*userRepository)
 	categoryService := category.NewCategoryService(*categoryRepository)
 	productService := products.NewProductService(*productRepository)
@@ -90,5 +90,6 @@ func RegisterHandlers(r *gin.Engine) {
 	//Order Group
 	orderGroup := r.Group("/order")
 	orderGroup.GET("/list", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.GetAllProducts)
+	orderGroup.DELETE("/cancel", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.CancelOrderById)
 
 }

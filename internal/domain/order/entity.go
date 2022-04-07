@@ -8,6 +8,7 @@ type Order struct {
 	CustomerUsername string
 	OrderItems       []OrderItem `gorm:"foreignKey:OrderId"`
 	CreatedAt        time.Time   `json:"createdAt"`
+	IsCancelled      bool
 }
 
 type OrderItem struct {
