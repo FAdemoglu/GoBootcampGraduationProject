@@ -69,6 +69,15 @@ func (r *CartRepository) DeleteById(username string, id int) error {
 	return nil
 }
 
+func (r *CartRepository) GetById(username string, Id int) Cart {
+	var cart Cart
+	result := r.db.Preload("Items").Joins("JOIN item on item.CartId=cart.CartId").Where("CustomerUsername =?", username).First(&cart, Id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return Cart{}
+	}
+	return cart
+}
+
 func (r *CartRepository) InsertSampleData() {
 	cart := Cart{
 		CustomerUsername: "Furkan Ademoglu",
@@ -78,6 +87,7 @@ func (r *CartRepository) InsertSampleData() {
 				UnitPrice:   300,
 				Quantity:    1,
 				ProductId:   5,
+				ProductCode: 1010101,
 			},
 		},
 	}

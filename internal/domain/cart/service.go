@@ -34,3 +34,8 @@ func (r *CartService) UpdateTheCart(username string, id, itemId, count int) erro
 	}
 	return nil
 }
+
+func (r *CartService) GetByIdCart(customerUsername string, Id int) Cart {
+	city := r.r.GetById(customerUsername, Id)
+	return city
+}

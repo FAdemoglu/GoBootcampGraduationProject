@@ -11,6 +11,7 @@ type Item struct {
 	ProductName string `json:"productName"`
 	UnitPrice   int    `json:"unitPrice"`
 	Quantity    int    `json:"quantity"`
+	ProductCode int    `json:"productCode"`
 	ProductId   int    `json:"-"`
 	CartId      int    `json:"-"`
 }

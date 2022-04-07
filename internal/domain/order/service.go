@@ -19,3 +19,8 @@ func (r *OrderService) CancelOrder(orderId int, customerUsername string) error {
 	error := r.r.CancelOrder(orderId, customerUsername)
 	return error
 }
+
+func (r *OrderService) CreateOrder(order Order) error {
+	err := r.r.CreateOrder(order)
+	return err
+}

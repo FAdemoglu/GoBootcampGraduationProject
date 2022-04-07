@@ -1,7 +1,9 @@
 package order
 
 import (
+	"fmt"
 	"github.com/FAdemoglu/graduationproject/internal/config"
+	"github.com/FAdemoglu/graduationproject/internal/domain/cart"
 	"github.com/FAdemoglu/graduationproject/internal/domain/order"
 	"github.com/FAdemoglu/graduationproject/internal/domain/products"
 	jwtHelper "github.com/FAdemoglu/graduationproject/pkg/jwt"
@@ -10,19 +12,22 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type OrderController struct {
 	appConfig      *config.Configuration
 	orderService   *order.OrderService
 	productService *products.ProductService
+	cartService    *cart.CartService
 }
 
-func NewOrderController(appConfig *config.Configuration, service *order.OrderService, productservice *products.ProductService) *OrderController {
+func NewOrderController(appConfig *config.Configuration, service *order.OrderService, productservice *products.ProductService, cartService *cart.CartService) *OrderController {
 	return &OrderController{
 		appConfig:      appConfig,
 		orderService:   service,
 		productService: productservice,
+		cartService:    cartService,
 	}
 }
 
@@ -55,4 +60,31 @@ func (c *OrderController) CancelOrderById(g *gin.Context) {
 	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı"}
 	g.JSON(http.StatusOK, data)
 
+}
+
+func (c *OrderController) CreateOrder(g *gin.Context) {
+	IdForm := g.Query("CartId")
+	CartId, _ := strconv.Atoi(IdForm)
+
+	decodedClaims := jwtHelper.VerifyToken(g.GetHeader("Authorization"), c.appConfig.SecretKey, "qa")
+	cart := c.cartService.GetByIdCart(decodedClaims.Username, CartId)
+	Items := make([]order.OrderItem, 1)
+	for i, c := range cart.Items {
+		Items[i].OrderId = c.CartId
+		Items[i].ProductName = c.ProductName
+		Items[i].UnitPrice = c.UnitPrice
+		Items[i].Quantity = c.Quantity
+		Items[i].ProductCode = c.ProductCode
+		Items[i].ProductId = c.ProductId
+	}
+
+	order := order.Order{
+		CustomerUsername: cart.CustomerUsername,
+		IsCancelled:      false,
+		CreatedAt:        time.Now(),
+		OrderId:          cart.CartId,
+		OrderItems:       Items,
+	}
+	err := c.orderService.CreateOrder(order)
+	fmt.Println(err)
 }

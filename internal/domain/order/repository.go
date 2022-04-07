@@ -42,6 +42,14 @@ func (r *OrderRepository) CancelOrder(orderId int, customerUsername string) erro
 	return nil
 }
 
+func (r *OrderRepository) CreateOrder(o Order) error {
+	result := r.db.Create(&o)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (r *OrderRepository) Migration() error {
 	return r.db.AutoMigrate(&Order{}, &OrderItem{})
 }
