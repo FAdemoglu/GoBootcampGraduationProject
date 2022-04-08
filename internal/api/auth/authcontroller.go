@@ -17,7 +17,6 @@ type AuthController struct {
 	r         users.UserService
 }
 
-// @BasePath /user
 func NewAuthController(appConfig *config.Configuration, r users.UserService) *AuthController {
 	return &AuthController{
 		appConfig: appConfig,

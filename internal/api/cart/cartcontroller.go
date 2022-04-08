@@ -19,7 +19,6 @@ type CartController struct {
 	productService *products.ProductService
 }
 
-// NewCartController @BasePath /cart
 func NewCartController(appConfig *config.Configuration, service *cart.CartService, productservice *products.ProductService) *CartController {
 	return &CartController{
 		appConfig:      appConfig,
@@ -42,7 +41,7 @@ func NewCartController(appConfig *config.Configuration, service *cart.CartServic
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /list [get]
+// @Router /cart/list [get]
 func (c *CartController) GetAllProducts(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	decodedClaims := jwtHelper.VerifyToken(g.GetHeader("Authorization"), c.appConfig.SecretKey, os.Getenv("ENV"))

@@ -31,6 +31,19 @@ func NewOrderController(appConfig *config.Configuration, service *order.OrderSer
 	}
 }
 
+// GetAllProducts GetCartAllProducts godoc
+// @Summary Gets all cart products with paginated result
+// @Tags Cart
+// @Accept  json
+// @Produce  json
+// @Param page query int false "Page Index"
+// @Param pageSize query int false "Page Size"
+// @Success 200 {object} pagination.Pages
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /cart/list [get]
 func (c *OrderController) GetAllProducts(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	decodedClaims := jwtHelper.VerifyToken(g.GetHeader("Authorization"), c.appConfig.SecretKey, "qa")
@@ -40,6 +53,18 @@ func (c *OrderController) GetAllProducts(g *gin.Context) {
 	g.JSON(http.StatusOK, paginatedResult)
 }
 
+// CancelOrderById FromCart godoc
+// @Summary Delete product from cart
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param OrderId query int false "OrderId"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /order/cancel [delete]
 func (c *OrderController) CancelOrderById(g *gin.Context) {
 	IdForm := g.Query("OrderId")
 	OrderId, _ := strconv.Atoi(IdForm)
@@ -62,6 +87,18 @@ func (c *OrderController) CancelOrderById(g *gin.Context) {
 
 }
 
+// CreateOrder godoc
+// @Summary Add product to cart with token
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param CartId query int false "CartId"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /order/create [post]
 func (c *OrderController) CreateOrder(g *gin.Context) {
 	IdForm := g.Query("CartId")
 	CartId, _ := strconv.Atoi(IdForm)
