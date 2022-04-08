@@ -16,17 +16,20 @@ import (
 	"github.com/FAdemoglu/graduationproject/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"log"
+	"os"
 )
 
 var AppConfig = &config.Configuration{}
 
 func RegisterHandlers(r *gin.Engine) {
-	cfgFile := "./config/location.qa" + ".yaml"
+	//We are using yaml file to database connection setting etc.
+	cfgFile := "./config/location." + os.Getenv("ENV") + ".yaml"
 	AppConfig, err := config.GetAllConfigValues(cfgFile)
 	if err != nil {
 		log.Fatalf("Failed to read config file. %v", err.Error())
 	}
 
+	//With database handler and database settings which is in Appconfig  made connection with mysql db
 	db := database_handler.NewMySQLDB(AppConfig.DatabaseSettings.DatabaseURI)
 
 	//New Repositories created
@@ -47,7 +50,7 @@ func RegisterHandlers(r *gin.Engine) {
 	userRepository.InsertSampleData()
 	categoryRepository.InsertSampleData()
 	productRepository.InserSampleData()
-	cartRepository.InsertSampleData()
+	//cartRepository.InsertSampleData()
 	orderRepository.InsertSampleData()
 	userService := users.NewUserService(*userRepository)
 	categoryService := category.NewCategoryService(*categoryRepository)
@@ -91,5 +94,5 @@ func RegisterHandlers(r *gin.Engine) {
 	orderGroup := r.Group("/order")
 	orderGroup.GET("/list", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.GetAllProducts)
 	orderGroup.DELETE("/cancel", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.CancelOrderById)
-	orderGroup.POST("/cancel", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.CreateOrder)
+	orderGroup.POST("/create", middleware.AuthMiddlewareForCart(AppConfig.JwtSettings.SecretKey), orderController.CreateOrder)
 }

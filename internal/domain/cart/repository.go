@@ -19,6 +19,7 @@ func (r *CartRepository) Migration() error {
 	return r.db.AutoMigrate(&Cart{}, &Item{})
 }
 
+//Get all product with customer username
 func (r *CartRepository) GetAllCartProducts(pageIndex, pageSize int, customerUsername string) ([]Cart, int) {
 	var cart []Cart
 	var count int64
@@ -26,6 +27,7 @@ func (r *CartRepository) GetAllCartProducts(pageIndex, pageSize int, customerUse
 	return cart, int(count)
 }
 
+//Add to cart product
 func (r *CartRepository) AddToCart(c Cart) error {
 	result := r.db.Create(&c)
 	if result.Error != nil {
@@ -34,6 +36,7 @@ func (r *CartRepository) AddToCart(c Cart) error {
 	return nil
 }
 
+//Update the cart with items
 func (r *CartRepository) UpdateTheCart(username string, id, itemId, count int) error {
 	var cart Cart
 	result := r.db.Preload("Items").Joins("JOIN item on item.CartId=cart.CartId").Where("CustomerUsername = ?", username).First(&cart, id)
@@ -55,6 +58,7 @@ func (r *CartRepository) UpdateTheCart(username string, id, itemId, count int) e
 	return nil
 }
 
+//Delete cart with Id and username
 func (r *CartRepository) DeleteById(username string, id int) error {
 	var exists bool
 	result := r.db.Where("CustomerUsername = ?", username).Delete(&Cart{}, id)
@@ -69,6 +73,7 @@ func (r *CartRepository) DeleteById(username string, id int) error {
 	return nil
 }
 
+//Get cart by ıd and username
 func (r *CartRepository) GetById(username string, Id int) Cart {
 	var cart Cart
 	result := r.db.Preload("Items").Joins("JOIN item on item.CartId=cart.CartId").Where("CustomerUsername =?", username).First(&cart, Id)
@@ -78,6 +83,7 @@ func (r *CartRepository) GetById(username string, Id int) Cart {
 	return cart
 }
 
+//Inserted Sample datas
 func (r *CartRepository) InsertSampleData() {
 	cart := Cart{
 		CustomerUsername: "Furkan Ademoglu",

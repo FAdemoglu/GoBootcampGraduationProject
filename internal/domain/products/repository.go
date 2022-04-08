@@ -31,7 +31,7 @@ func (r *ProductRepository) DeleteProductById(id int) error {
 	result := r.db.Delete(&Product{}, id)
 
 	if err := result.Scan(&exists); err != nil {
-		return result.Error
+		return ErrCouldNotFindProductById
 	} else if !exists {
 		return ErrCouldNotFindProductById
 	}
@@ -86,6 +86,7 @@ func (r *ProductRepository) InserSampleData() {
 		ProductPrice:      300,
 		ProductStockCount: 100,
 		CategoryId:        1,
+		ProductCode:       100001,
 	}
-	r.db.Where(Product{ProductName: products.ProductName}).Attrs(Product{Id: products.Id, ProductName: products.ProductName, ProductPrice: products.ProductPrice, ProductStockCount: products.ProductStockCount, CategoryId: products.CategoryId}).FirstOrCreate(&products)
+	r.db.Where(Product{ProductName: products.ProductName}).Attrs(Product{Id: products.Id, ProductName: products.ProductName, ProductPrice: products.ProductPrice, ProductStockCount: products.ProductStockCount, CategoryId: products.CategoryId, ProductCode: products.ProductCode}).FirstOrCreate(&products)
 }

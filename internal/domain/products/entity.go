@@ -8,6 +8,7 @@ type Product struct {
 	ProductPrice      int
 	ProductStockCount int
 	CategoryId        int
+	ProductCode       int
 	Category          category.Category `gorm:"foreignKey:CategoryId;references:CategoryId" json:"Category,omitempty"`
 }
 

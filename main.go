@@ -10,6 +10,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -29,6 +30,7 @@ import (
 // @BasePath /
 // @schemes http
 func main() {
+	os.Setenv("ENV", "qa")
 	r := gin.Default()
 	registerMiddlewares(r)
 	api.RegisterHandlers(r)

@@ -39,17 +39,20 @@ func NewAuthController(appConfig *config.Configuration, r users.UserService) *Au
 func (c *AuthController) Login(g *gin.Context) {
 	var req LoginRequest
 
+	//If request doesnt match with login request struct send error
 	if err := g.ShouldBind(&req); err != nil {
 		g.JSON(http.StatusBadRequest, gin.H{
 			"error_message": "Check your request body.",
 		})
 		return
 	}
+	//We are comparing request in database user table
 	user := c.r.GetByUserNameAndPassword(req.Username, req.Password)
 
+	//If user is can not find by system send the client error
 	if user.Username == "" {
 		g.JSON(http.StatusNotFound, gin.H{
-			"error_message": "User not found!",
+			"error_message": "Check your username and password",
 		})
 		return
 	}
@@ -61,7 +64,9 @@ func (c *AuthController) Login(g *gin.Context) {
 		"exp":      time.Now().Add(24 * time.Hour).Unix(),
 		"roles":    user.Roles,
 	})
+	//Token generate with jwt helper
 	token := jwtHelper.GenerateToken(jwtClaims, c.appConfig.JwtSettings.SecretKey)
+	//If all success send the client jwt token
 	data := shared.ApiResponse{IsSuccess: true, Message: "Başarılı", Data: token}
 	g.JSON(http.StatusOK, data)
 }
@@ -81,6 +86,7 @@ func (c *AuthController) Login(g *gin.Context) {
 func (c *AuthController) Register(g *gin.Context) {
 	var req RegisterRequest
 
+	//Request should match with register request
 	if err := g.ShouldBind(&req); err != nil {
 		g.JSON(http.StatusBadRequest, gin.H{
 			"error_message": "Check your request body.",
@@ -88,20 +94,24 @@ func (c *AuthController) Register(g *gin.Context) {
 		return
 	}
 
+	//We are search the username in database if exist send the client error with message
 	user := c.r.GetByUsername(req.Username)
 	if user.Username != "" {
 		g.JSON(http.StatusBadRequest, gin.H{
-			"error_message": "Bu kullanıcı adı ile kullanıcı bulunuyor",
+			"error_message": "Username exist in database",
 		})
 		return
 	}
 
+	//Compare passwords
 	if req.Password != req.ConfirmPassword {
 		g.JSON(http.StatusForbidden, gin.H{
-			"error_message": "Şifreler uyuşmuyor",
+			"error_message": "Passwords do not match",
 		})
 		return
 	}
+
+	//If all errors are nil system create user in database and return jwt token to user
 	c.r.CreateUser(req.Username, req.Password)
 	jwtClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userId":   user.Id,

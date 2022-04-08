@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+//Reading csv files with this helper
 func ReadCsvToBookSlice(fileName string) ([]category.Category, error) {
 	f, err := os.Open(fileName)
 	if err != nil {

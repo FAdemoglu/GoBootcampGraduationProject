@@ -1,7 +1,6 @@
 package category
 
 import (
-	"fmt"
 	"github.com/FAdemoglu/graduationproject/helper"
 	"github.com/FAdemoglu/graduationproject/internal/domain/category"
 	"github.com/FAdemoglu/graduationproject/pkg/pagination"
@@ -10,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type CategoryController struct {
@@ -46,8 +46,22 @@ func (c *CategoryController) GetAllCategories(g *gin.Context) {
 
 func (c *CategoryController) UploadCSVDatas(g *gin.Context) {
 	file, header, err := g.Request.FormFile("categoriescsv")
+	if err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error":   err,
+			"message": "No Documentations found",
+		})
+		return
+	}
 	filename := header.Filename
-	fmt.Println(filename)
+	last := filename[strings.LastIndex(filename, ".")+1:]
+	if last != "csv" {
+		g.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Uploaded file must be csv",
+			"message": "Invalid file",
+		})
+		return
+	}
 	out, err := os.Create(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -59,6 +73,7 @@ func (c *CategoryController) UploadCSVDatas(g *gin.Context) {
 			"error":   err,
 			"message": "Failed to upload",
 		})
+		return
 	}
 
 	// The file cannot be received.

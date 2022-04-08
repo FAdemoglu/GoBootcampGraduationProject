@@ -71,6 +71,23 @@ func (r *OrderRepository) InsertSampleData() {
 			},
 		},
 	}
+	orderTwo := Order{
+		CustomerUsername: "Furkan Ademoglu",
+		OrderId:          3,
+		CreatedAt:        time.Now(),
+		IsCancelled:      true,
+		OrderItems: []OrderItem{
+			{
+				ProductName: "Lenovo IDEA PAD",
+				UnitPrice:   300,
+				Quantity:    1,
+				ProductId:   5,
+				ProductCode: 1010101,
+				OrderId:     3,
+			},
+		},
+	}
 
 	r.db.Create(&order)
+	r.db.Create(&orderTwo)
 }
