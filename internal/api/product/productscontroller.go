@@ -118,7 +118,7 @@ func (c *ProductController) CreateProduct(g *gin.Context) {
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /product/create [post]
+// @Router /product/update [post]
 func (c *ProductController) UpdateProduct(g *gin.Context) {
 	var req ProductRequest
 
@@ -172,7 +172,7 @@ func (c *ProductController) UpdateProduct(g *gin.Context) {
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /product/create [post]
+// @Router /product/search [get]
 func (c *ProductController) SearchProduct(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	searched := g.Query("searched")
