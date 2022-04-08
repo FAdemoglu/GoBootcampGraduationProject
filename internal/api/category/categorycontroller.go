@@ -22,7 +22,7 @@ func NewCategoryController(service *category.CategoryService) *CategoryControlle
 	}
 }
 
-// GetAllCities godoc
+// GetAllCategories godoc
 // @Summary Gets all cities with paginated result
 // @Tags City
 // @Accept  json
@@ -34,7 +34,7 @@ func NewCategoryController(service *category.CategoryService) *CategoryControlle
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /city [get]
+// @Router /category/list [get]
 func (c *CategoryController) GetAllCategories(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	items, count := c.categoryService.GetAllCategories(pageIndex, pageSize)
@@ -44,6 +44,18 @@ func (c *CategoryController) GetAllCategories(g *gin.Context) {
 	g.JSON(http.StatusCreated, paginatedResult)
 }
 
+// UploadCSVDatas godoc
+// @Summary Gets all cities with paginated result
+// @Tags City
+// @Accept  json
+// @Produce  json
+// @Param
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /category/list [get]
 func (c *CategoryController) UploadCSVDatas(g *gin.Context) {
 	file, header, err := g.Request.FormFile("categoriescsv")
 	if err != nil {

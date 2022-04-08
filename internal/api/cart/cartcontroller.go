@@ -19,7 +19,7 @@ type CartController struct {
 	productService *products.ProductService
 }
 
-// @BasePath /cart
+// NewCartController @BasePath /cart
 func NewCartController(appConfig *config.Configuration, service *cart.CartService, productservice *products.ProductService) *CartController {
 	return &CartController{
 		appConfig:      appConfig,
@@ -99,7 +99,7 @@ func (c *CartController) AddToCart(g *gin.Context) {
 // @Tags Auth
 // @Accept  json
 // @Produce  json
-// @Param
+// @Param Id query int false "Id"
 // @Success 200
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
@@ -130,7 +130,9 @@ func (c *CartController) DeleteById(g *gin.Context) {
 // @Tags Auth
 // @Accept  json
 // @Produce  json
-// @Param
+// @Param Id query int false "Id"
+// @Param ItemId query int false "ItemId"
+// @Param Count query int false "Count"
 // @Success 200
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
