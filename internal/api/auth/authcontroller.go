@@ -17,6 +17,7 @@ type AuthController struct {
 	r         users.UserService
 }
 
+// @BasePath /user
 func NewAuthController(appConfig *config.Configuration, r users.UserService) *AuthController {
 	return &AuthController{
 		appConfig: appConfig,
@@ -35,7 +36,7 @@ func NewAuthController(appConfig *config.Configuration, r users.UserService) *Au
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /auth/login [post]
+// @Router /user/login [post]
 func (c *AuthController) Login(g *gin.Context) {
 	var req LoginRequest
 
@@ -76,13 +77,13 @@ func (c *AuthController) Login(g *gin.Context) {
 // @Tags Auth
 // @Accept  json
 // @Produce  json
-// @Param loginRequest body RegisterRequest true "login informations"
+// @Param registerRequest body RegisterRequest true "register informations"
 // @Success 200
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /auth/register [post]
+// @Router /user/register [post]
 func (c *AuthController) Register(g *gin.Context) {
 	var req RegisterRequest
 

@@ -51,7 +51,7 @@ func RegisterHandlers(r *gin.Engine) {
 	categoryRepository.InsertSampleData()
 	productRepository.InserSampleData()
 	//cartRepository.InsertSampleData()
-	orderRepository.InsertSampleData()
+	//orderRepository.InsertSampleData()
 	userService := users.NewUserService(*userRepository)
 	categoryService := category.NewCategoryService(*categoryRepository)
 	productService := products.NewProductService(*productRepository)
