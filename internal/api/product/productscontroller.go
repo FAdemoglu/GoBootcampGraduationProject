@@ -19,6 +19,20 @@ func NewProductControler(service *products.ProductService) *ProductController {
 }
 
 //Get all product list with pagination
+
+// GetAllProducts GetCartAllProducts godoc
+// @Summary Gets all cart products with paginated result
+// @Tags Cart
+// @Accept  json
+// @Produce  json
+// @Param page query int false "Page Index"
+// @Param pageSize query int false "Page Size"
+// @Success 200 {object} pagination.Pages
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product/list [get]
 func (c *ProductController) GetAllProducts(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	items, count := c.productService.GetAllProducts(pageIndex, pageSize)
@@ -27,6 +41,18 @@ func (c *ProductController) GetAllProducts(g *gin.Context) {
 	g.JSON(http.StatusOK, paginatedResult)
 }
 
+// DeleteProductById  godoc
+// @Summary Delete product from database
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param Id query int false "Id"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product/remove [delete]
 func (c *ProductController) DeleteProductById(g *gin.Context) {
 	IdForm := g.Query("Id")
 	Id, _ := strconv.Atoi(IdForm)
@@ -42,6 +68,18 @@ func (c *ProductController) DeleteProductById(g *gin.Context) {
 	})
 }
 
+// CreateProduct godoc
+// @Summary Create product
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param productRequest body ProductRequest true "login informations"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product/create [post]
 func (c *ProductController) CreateProduct(g *gin.Context) {
 	var req ProductRequest
 
@@ -69,6 +107,18 @@ func (c *ProductController) CreateProduct(g *gin.Context) {
 	})
 }
 
+// UpdateProduct FromProduct godoc
+// @Summary update product
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param productRequest body ProductRequest true "product informations"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product/create [post]
 func (c *ProductController) UpdateProduct(g *gin.Context) {
 	var req ProductRequest
 
@@ -111,6 +161,18 @@ func (c *ProductController) UpdateProduct(g *gin.Context) {
 	})
 }
 
+// SearchProduct FromProduct godoc
+// @Summary update product
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param searched query int false "searched"
+// @Success 200
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /product/create [post]
 func (c *ProductController) SearchProduct(g *gin.Context) {
 	pageIndex, pageSize := pagination.GetPaginationParametersFromRequest(g)
 	searched := g.Query("searched")
