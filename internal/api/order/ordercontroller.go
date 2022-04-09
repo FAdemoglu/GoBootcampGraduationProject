@@ -33,7 +33,7 @@ func NewOrderController(appConfig *config.Configuration, service *order.OrderSer
 
 // GetAllProducts GetCartAllProducts godoc
 // @Summary Gets all cart products with paginated result
-// @Tags Cart
+// @Tags Order
 // @Accept  json
 // @Produce  json
 // @Param page query int false "Page Index"
@@ -55,7 +55,7 @@ func (c *OrderController) GetAllProducts(g *gin.Context) {
 
 // CancelOrderById FromCart godoc
 // @Summary Delete product from cart
-// @Tags Auth
+// @Tags Order
 // @Accept  json
 // @Produce  json
 // @Param OrderId query int false "OrderId"
@@ -89,7 +89,7 @@ func (c *OrderController) CancelOrderById(g *gin.Context) {
 
 // CreateOrder godoc
 // @Summary Add product to cart with token
-// @Tags Auth
+// @Tags Order
 // @Accept  json
 // @Produce  json
 // @Param CartId query int false "CartId"

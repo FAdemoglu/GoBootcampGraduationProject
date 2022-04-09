@@ -55,7 +55,7 @@ func (c *CartController) GetAllProducts(g *gin.Context) {
 
 // AddToCart godoc
 // @Summary Add product to cart with token
-// @Tags Auth
+// @Tags Cart
 // @Accept  json
 // @Produce  json
 // @Param cartAddRequest body CartAddRequest true "cart informations"
@@ -95,7 +95,7 @@ func (c *CartController) AddToCart(g *gin.Context) {
 
 // DeleteById FromCart godoc
 // @Summary Delete product from cart
-// @Tags Auth
+// @Tags Cart
 // @Accept  json
 // @Produce  json
 // @Param Id query int false "Id"
@@ -126,7 +126,7 @@ func (c *CartController) DeleteById(g *gin.Context) {
 
 // UpdateCart  godoc
 // @Summary Add product to cart with token
-// @Tags Auth
+// @Tags Cart
 // @Accept  json
 // @Produce  json
 // @Param Id query int false "Id"

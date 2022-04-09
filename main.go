@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/FAdemoglu/graduationproject/docs"
 	"github.com/FAdemoglu/graduationproject/internal/api"
 	"github.com/FAdemoglu/graduationproject/pkg/gracefulshut"
 	"github.com/FAdemoglu/graduationproject/pkg/middleware"
@@ -14,9 +15,9 @@ import (
 	"time"
 )
 
-// @title Gin City Service API
+// @title Gin Graduation Project Service
 // @version 1.0
-// @description City service api provides city informations.
+// @description Simple E-commerce RESTFULL API
 // @termsOfService http://mywebsite.com/terms
 
 // @contact.name API Support

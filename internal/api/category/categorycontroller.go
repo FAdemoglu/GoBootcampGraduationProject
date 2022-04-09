@@ -24,7 +24,7 @@ func NewCategoryController(service *category.CategoryService) *CategoryControlle
 
 // GetAllCategories godoc
 // @Summary Gets all cities with paginated result
-// @Tags City
+// @Tags Category
 // @Accept  json
 // @Produce  json
 // @Param page query int false "Page Index"
@@ -46,10 +46,9 @@ func (c *CategoryController) GetAllCategories(g *gin.Context) {
 
 // UploadCSVDatas godoc
 // @Summary Gets all cities with paginated result
-// @Tags City
+// @Tags Category
 // @Accept  json
 // @Produce  json
-// @Param
 // @Success 200
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string

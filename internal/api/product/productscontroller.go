@@ -22,7 +22,7 @@ func NewProductControler(service *products.ProductService) *ProductController {
 
 // GetAllProducts GetCartAllProducts godoc
 // @Summary Gets all cart products with paginated result
-// @Tags Cart
+// @Tags Products
 // @Accept  json
 // @Produce  json
 // @Param page query int false "Page Index"
@@ -43,7 +43,7 @@ func (c *ProductController) GetAllProducts(g *gin.Context) {
 
 // DeleteProductById  godoc
 // @Summary Delete product from database
-// @Tags Auth
+// @Tags Products
 // @Accept  json
 // @Produce  json
 // @Param Id query int false "Id"
@@ -70,7 +70,7 @@ func (c *ProductController) DeleteProductById(g *gin.Context) {
 
 // CreateProduct godoc
 // @Summary Create product
-// @Tags Auth
+// @Tags Products
 // @Accept  json
 // @Produce  json
 // @Param productRequest body ProductRequest true "login informations"
@@ -109,7 +109,7 @@ func (c *ProductController) CreateProduct(g *gin.Context) {
 
 // UpdateProduct FromProduct godoc
 // @Summary update product
-// @Tags Auth
+// @Tags Products
 // @Accept  json
 // @Produce  json
 // @Param productRequest body ProductRequest true "product informations"
@@ -163,7 +163,7 @@ func (c *ProductController) UpdateProduct(g *gin.Context) {
 
 // SearchProduct FromProduct godoc
 // @Summary update product
-// @Tags Auth
+// @Tags Products
 // @Accept  json
 // @Produce  json
 // @Param searched query int false "searched"

@@ -1,0 +1,688 @@
+basePath: /
+definitions:
+  auth.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  auth.RegisterRequest:
+    properties:
+      confirmpassword:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - confirmpassword
+    - password
+    - username
+    type: object
+  cart.CartAddRequest:
+    properties:
+      productId:
+        type: integer
+      productname:
+        type: string
+      quantity:
+        type: integer
+      unitprice:
+        type: integer
+    required:
+    - productId
+    - productname
+    - quantity
+    - unitprice
+    type: object
+  pagination.Pages:
+    properties:
+      items: {}
+      page:
+        type: integer
+      pageCount:
+        type: integer
+      pageSize:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+  product.ProductRequest:
+    properties:
+      categoryId:
+        type: integer
+      productname:
+        type: string
+      productprice:
+        type: integer
+      stock:
+        type: integer
+      stockcode:
+        type: integer
+    required:
+    - categoryId
+    - productname
+    - productprice
+    - stock
+    - stockcode
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@mywebsite.io
+    name: API Support
+    url: http://mywebsite.com/support
+  description: Simple E-commerce RESTFULL API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://mywebsite.com/terms
+  title: Gin Graduation Project Service
+  version: "1.0"
+paths:
+  /cart/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: cart informations
+        in: body
+        name: cartAddRequest
+        required: true
+        schema:
+          $ref: '#/definitions/cart.CartAddRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add product to cart with token
+      tags:
+      - Cart
+  /cart/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page Index
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pagination.Pages'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Gets all cart products with paginated result
+      tags:
+      - Order
+  /cart/remove:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Id
+        in: query
+        name: Id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete product from cart
+      tags:
+      - Cart
+  /cart/update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Id
+        in: query
+        name: Id
+        type: integer
+      - description: ItemId
+        in: query
+        name: ItemId
+        type: integer
+      - description: Count
+        in: query
+        name: Count
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add product to cart with token
+      tags:
+      - Cart
+  /category/list:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Gets all cities with paginated result
+      tags:
+      - Category
+  /order/cancel:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: OrderId
+        in: query
+        name: OrderId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete product from cart
+      tags:
+      - Order
+  /order/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: CartId
+        in: query
+        name: CartId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add product to cart with token
+      tags:
+      - Order
+  /product/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: login informations
+        in: body
+        name: productRequest
+        required: true
+        schema:
+          $ref: '#/definitions/product.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create product
+      tags:
+      - Products
+  /product/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page Index
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pagination.Pages'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Gets all cart products with paginated result
+      tags:
+      - Products
+  /product/remove:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Id
+        in: query
+        name: Id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete product from database
+      tags:
+      - Products
+  /product/search:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: searched
+        in: query
+        name: searched
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: update product
+      tags:
+      - Products
+  /product/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: product informations
+        in: body
+        name: productRequest
+        required: true
+        schema:
+          $ref: '#/definitions/product.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: update product
+      tags:
+      - Products
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: login informations
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login into system with username and password
+      tags:
+      - Auth
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: register informations
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register into system with username and password
+      tags:
+      - Auth
+schemes:
+- http
+swagger: "2.0"
