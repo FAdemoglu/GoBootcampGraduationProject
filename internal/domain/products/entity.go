@@ -12,6 +12,16 @@ type Product struct {
 	Category          category.Category `gorm:"foreignKey:CategoryId;references:CategoryId" json:"Category,omitempty"`
 }
 
+func NewProduct(productName string, productPrice, productStockCount, CategoryId, ProductCode int) *Product {
+	return &Product{
+		ProductName:       productName,
+		ProductPrice:      productPrice,
+		ProductStockCount: productStockCount,
+		CategoryId:        CategoryId,
+		ProductCode:       ProductCode,
+	}
+}
+
 func (Product) TableName() string {
 	return "Products"
 }
